@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Louvor ISP</title>
     <style>
       body {
+        font-size: 1rem;
         font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
         padding: 20px;
         background-color: #f0f0f0;
@@ -14,8 +16,9 @@
       }
 
       #filterInput {
-        padding: 10px;
-        width: 100%;
+        padding: 1em;
+        width: 80vw;
+        max-width: 100%;
         box-sizing: border-box;
         margin-bottom: 20px;
         border: 2px solid #007bff;
@@ -24,6 +27,7 @@
       }
 
       .file-name {
+        font-size: 1em;
         padding: 10px;
         background-color: #fff;
         border: 1px solid #ddd;
@@ -44,7 +48,7 @@
         border: 1px solid #ddd;
         border-radius: 4px;
         margin-top: 20px;
-        white-space: pre-wrap; /* Keeps the text formatting */
+        white-space: pre-wrap;
         max-height: 300px;
         overflow-y: auto;
       }
@@ -64,6 +68,27 @@
 
       #copyButton:hover {
         background-color: #0056b3;
+      }
+
+      @media (max-width: 600px) {
+        body {
+          font-size: 1.2rem;
+        }
+
+        #filterInput,
+        .file-name,
+        #copyButton {
+          padding: 1.5em;
+        }
+
+        .file-name,
+        #copyButton {
+          font-size: 1.2em;
+        }
+
+        #fileContent {
+          padding: 1.5em;
+        }
       }
     </style>
   </head>
