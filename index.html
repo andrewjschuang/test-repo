@@ -1,28 +1,78 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Text File Viewer</title>
-    <!-- Add some basic styling here or link to your CSS file -->
+    <title>Louvor ISP</title>
     <style>
-      /* Add your CSS styling here */
       body {
-        font-family: Arial, sans-serif;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        padding: 20px;
+        background-color: #f0f0f0;
       }
-      #fileList {
-        margin-top: 20px;
+
+      h1 {
+        color: #333;
       }
+
+      #filterInput {
+        padding: 10px;
+        width: 100%;
+        box-sizing: border-box;
+        margin-bottom: 20px;
+        border: 2px solid #007bff;
+        border-radius: 4px;
+        font-size: 16px;
+      }
+
       .file-name {
+        padding: 10px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        margin-bottom: 10px;
         cursor: pointer;
-        margin: 5px 0;
+        transition: background-color 0.2s;
+      }
+
+      .file-name:hover {
+        background-color: #f9f9f9;
+      }
+
+      #fileContent {
+        display: none;
+        padding: 20px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        margin-top: 20px;
+        white-space: pre-wrap; /* Keeps the text formatting */
+        max-height: 300px;
+        overflow-y: auto;
+      }
+
+      #copyButton {
+        display: none;
+        margin-top: 20px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+      }
+
+      #copyButton:hover {
+        background-color: #0056b3;
       }
     </style>
   </head>
   <body>
-    <h1>Text File Viewer</h1>
-    <input type="text" id="filterInput" placeholder="Filter files..." />
+    <h1>Louvor ISP</h1>
+    <input type="text" id="filterInput" placeholder="Pesquisar pelo nome..." />
     <div id="fileList"></div>
+    <button id="copyButton" style="display: none">Copiar</button>
     <div id="fileContent"></div>
-    <button id="copyButton" style="display: none">Copy Content</button>
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {
@@ -59,11 +109,15 @@
           const data = await response.json();
           const content = atob(data.content);
           fileContent.textContent = content;
+          fileContent.style.display = "block";
           copyButton.style.display = "block";
           copyButton.onclick = () => navigator.clipboard.writeText(content);
         }
 
         filterInput.oninput = function () {
+          fileContent.textContent = "";
+          fileContent.style.display = "none";
+          copyButton.style.display = "none";
           const value = this.value.toLowerCase();
           const files = fileList.getElementsByClassName("file-name");
           for (let i = 0; i < files.length; i++) {
