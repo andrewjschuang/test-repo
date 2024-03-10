@@ -64,8 +64,9 @@
         overflow-y: auto;
       }
 
-      #copyButton {
+      .button {
         display: none;
+        min-width: 150px;
         margin-top: 20px;
         background-color: #007bff;
         color: #fff;
@@ -77,8 +78,14 @@
         transition: background-color 0.2s;
       }
 
-      #copyButton:hover {
+      .button:hover {
         background-color: #0056b3;
+      }
+
+      #button-container {
+        display: flex;
+        justify-content: flex-start;
+        gap: 10px;
       }
 
       @media (max-width: 600px) {
@@ -91,7 +98,7 @@
         }
 
         .file-name,
-        #copyButton {
+        .button {
           font-size: 0.9em;
           padding: 1em;
         }
@@ -106,7 +113,18 @@
     <h1>Louvor ISP</h1>
     <input type="text" id="filterInput" placeholder="Pesquisar pelo nome..." />
     <div id="fileList"></div>
-    <button id="copyButton" style="display: none">Copiar</button>
+    <div id="button-container">
+      <button id="copyButton" class="button" style="display: none">
+        Copiar
+      </button>
+      <button
+        id="copyUrlButton"
+        class="button"
+        style="display: none; margin-left: 10px"
+      >
+        Compartilhar
+      </button>
+    </div>
     <div id="fileContent"></div>
 
     <script>
@@ -138,6 +156,7 @@
         }
 
         async function fetchFileContent(path) {
+          selectedFileName = path;
           const content = await fetch(
             `https://raw.githubusercontent.com/${repoOwner}/${repoName}/main/${path}`
           )
@@ -148,6 +167,7 @@
           fileContent.textContent = content;
           fileContent.style.display = "block";
           copyButton.style.display = "block";
+          copyUrlButton.style.display = "block";
           copyButton.onclick = () => navigator.clipboard.writeText(content);
         }
 
@@ -155,6 +175,7 @@
           fileContent.textContent = "";
           fileContent.style.display = "none";
           copyButton.style.display = "none";
+          copyUrlButton.style.display = "none";
           const value = this.value.toLowerCase();
           const files = fileList.getElementsByClassName("file-name");
           for (let i = 0; i < files.length; i++) {
@@ -166,7 +187,20 @@
           }
         };
 
+        copyUrlButton.onclick = () => {
+          const query = encodeURIComponent(selectedFileName);
+          const url = `https://${repoOwner}.github.io/${repoName}/?file=${query}`;
+          navigator.clipboard.writeText(url);
+        };
+
         displayFiles();
+
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const fileName = urlParams.get("file");
+        if (fileName) {
+          fetchFileContent(fileName);
+        }
       });
     </script>
   </body>
