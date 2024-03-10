@@ -149,7 +149,14 @@
           files.forEach((file) => {
             const div = document.createElement("div");
             div.className = "file-name";
-            div.textContent = file.name;
+            div.textContent = file.name
+              .replace(".txt", "")
+              .split("-")
+              .map(
+                (part) =>
+                  part.charAt(0).toUpperCase() + part.slice(1).toLowerCase()
+              )
+              .join(" ");
             div.onclick = () => fetchFileContent(file.path);
             fileList.appendChild(div);
           });
