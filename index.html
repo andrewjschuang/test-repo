@@ -47,6 +47,11 @@
         background-color: #f9f9f9;
       }
 
+      #fileList {
+        max-height: 320px;
+        overflow-y: auto;
+      }
+
       #fileContent {
         display: none;
         padding: 20px;
@@ -133,10 +138,12 @@
         }
 
         async function fetchFileContent(path) {
-          const content = await fetch(`https://raw.githubusercontent.com/${repoOwner}/${repoName}/main/${path}`)
+          const content = await fetch(
+            `https://raw.githubusercontent.com/${repoOwner}/${repoName}/main/${path}`
+          )
             .then((response) => response.text())
             .catch((error) => {
-              throw new Error("Error:", error)
+              throw new Error("Error:", error);
             });
           fileContent.textContent = content;
           fileContent.style.display = "block";
